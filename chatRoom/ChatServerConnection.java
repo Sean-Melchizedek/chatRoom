@@ -1,12 +1,15 @@
 import java.net.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class ChatServerConnection implements Runnable
 {
-	private Socket clientSocket;
-	private static ChatServerHandler chatHandler = new ChatServerHandler();
-	public ChatServerConnection(Socket clientSocket) {
-		this.clientSocket = clientSocket;
+	private Socket serverSocket;
+	private ChatServerHandler chatHandler = null;
+	public ChatServerConnection(Socket serverSocket, HashMap<String,String> username_socket_HashMap, ArrayList<String> usernameList) {
+		this.serverSocket = serverSocket;
+		chatHandler = new ChatServerHandler(username_socket_HashMap, usernameList);
 	}
 
     /**
@@ -14,7 +17,7 @@ public class ChatServerConnection implements Runnable
      */
 	public void run() {
 		try {
-			chatHandler.process(this.clientSocket);
+			chatHandler.process(this.serverSocket);
 		}
 		finally{
 
